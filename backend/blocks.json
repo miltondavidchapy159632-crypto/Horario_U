@@ -1,0 +1,122 @@
+[
+  {
+    "id_bloque": 1,
+    "etiqueta": "G1_p1",
+    "hora_inicio": "1970-01-01T07:00:00.000Z",
+    "hora_fin": "1970-01-01T07:50:00.000Z"
+  },
+  {
+    "id_bloque": 2,
+    "etiqueta": "G1_p2",
+    "hora_inicio": "1970-01-01T07:50:00.000Z",
+    "hora_fin": "1970-01-01T08:40:00.000Z"
+  },
+  {
+    "id_bloque": 3,
+    "etiqueta": "G1R",
+    "hora_inicio": "1970-01-01T08:40:00.000Z",
+    "hora_fin": "1970-01-01T08:50:00.000Z"
+  },
+  {
+    "id_bloque": 4,
+    "etiqueta": "G2_p1",
+    "hora_inicio": "1970-01-01T08:50:00.000Z",
+    "hora_fin": "1970-01-01T09:40:00.000Z"
+  },
+  {
+    "id_bloque": 5,
+    "etiqueta": "G2_p2",
+    "hora_inicio": "1970-01-01T09:40:00.000Z",
+    "hora_fin": "1970-01-01T10:30:00.000Z"
+  },
+  {
+    "id_bloque": 6,
+    "etiqueta": "G2R",
+    "hora_inicio": "1970-01-01T10:30:00.000Z",
+    "hora_fin": "1970-01-01T10:40:00.000Z"
+  },
+  {
+    "id_bloque": 7,
+    "etiqueta": "G3_p1",
+    "hora_inicio": "1970-01-01T10:40:00.000Z",
+    "hora_fin": "1970-01-01T11:30:00.000Z"
+  },
+  {
+    "id_bloque": 8,
+    "etiqueta": "G3_p2",
+    "hora_inicio": "1970-01-01T11:30:00.000Z",
+    "hora_fin": "1970-01-01T12:20:00.000Z"
+  },
+  {
+    "id_bloque": 9,
+    "etiqueta": "ALM",
+    "hora_inicio": "1970-01-01T12:20:00.000Z",
+    "hora_fin": "1970-01-01T13:50:00.000Z"
+  },
+  {
+    "id_bloque": 10,
+    "etiqueta": "G4_p1",
+    "hora_inicio": "1970-01-01T13:50:00.000Z",
+    "hora_fin": "1970-01-01T14:40:00.000Z"
+  },
+  {
+    "id_bloque": 11,
+    "etiqueta": "G4_p2",
+    "hora_inicio": "1970-01-01T14:40:00.000Z",
+    "hora_fin": "1970-01-01T15:30:00.000Z"
+  },
+  {
+    "id_bloque": 12,
+    "etiqueta": "G4R",
+    "hora_inicio": "1970-01-01T15:30:00.000Z",
+    "hora_fin": "1970-01-01T15:40:00.000Z"
+  },
+  {
+    "id_bloque": 13,
+    "etiqueta": "G5_p1",
+    "hora_inicio": "1970-01-01T15:40:00.000Z",
+    "hora_fin": "1970-01-01T16:30:00.000Z"
+  },
+  {
+    "id_bloque": 14,
+    "etiqueta": "G5_p2",
+    "hora_inicio": "1970-01-01T16:30:00.000Z",
+    "hora_fin": "1970-01-01T17:20:00.000Z"
+  },
+  {
+    "id_bloque": 15,
+    "etiqueta": "G5R",
+    "hora_inicio": "1970-01-01T17:20:00.000Z",
+    "hora_fin": "1970-01-01T17:30:00.000Z"
+  },
+  {
+    "id_bloque": 16,
+    "etiqueta": "G6_p1",
+    "hora_inicio": "1970-01-01T17:30:00.000Z",
+    "hora_fin": "1970-01-01T18:20:00.000Z"
+  },
+  {
+    "id_bloque": 17,
+    "etiqueta": "G6_p2",
+    "hora_inicio": "1970-01-01T18:20:00.000Z",
+    "hora_fin": "1970-01-01T19:10:00.000Z"
+  },
+  {
+    "id_bloque": 18,
+    "etiqueta": "G6R",
+    "hora_inicio": "1970-01-01T19:10:00.000Z",
+    "hora_fin": "1970-01-01T19:20:00.000Z"
+  },
+  {
+    "id_bloque": 19,
+    "etiqueta": "G7_p1",
+    "hora_inicio": "1970-01-01T19:20:00.000Z",
+    "hora_fin": "1970-01-01T20:10:00.000Z"
+  },
+  {
+    "id_bloque": 20,
+    "etiqueta": "G7_p2",
+    "hora_inicio": "1970-01-01T20:10:00.000Z",
+    "hora_fin": "1970-01-01T21:00:00.000Z"
+  }
+]

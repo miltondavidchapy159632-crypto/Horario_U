@@ -1,0 +1,38 @@
+{
+  "Reglas": [
+    {
+      "COLUMN_NAME": "id_regla",
+      "DATA_TYPE": "int"
+    },
+    {
+      "COLUMN_NAME": "nombre_grupo_tipo",
+      "DATA_TYPE": "varchar"
+    },
+    {
+      "COLUMN_NAME": "dia_semana",
+      "DATA_TYPE": "varchar"
+    },
+    {
+      "COLUMN_NAME": "id_bloque",
+      "DATA_TYPE": "int"
+    }
+  ],
+  "Cursos": [
+    {
+      "COLUMN_NAME": "id_curso",
+      "DATA_TYPE": "int"
+    },
+    {
+      "COLUMN_NAME": "codigo_curso",
+      "DATA_TYPE": "varchar"
+    },
+    {
+      "COLUMN_NAME": "nombre_curso",
+      "DATA_TYPE": "varchar"
+    },
+    {
+      "COLUMN_NAME": "creditos",
+      "DATA_TYPE": "int"
+    }
+  ]
+}

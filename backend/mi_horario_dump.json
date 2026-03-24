@@ -1,0 +1,42 @@
+[
+  {
+    "id_horario": 1,
+    "id_curso": 1,
+    "nombre_grupo": "G1",
+    "id_bloque": 1,
+    "dia_semana": "Lunes",
+    "es_restringido": true
+  },
+  {
+    "id_horario": 2,
+    "id_curso": 1,
+    "nombre_grupo": "G1",
+    "id_bloque": 2,
+    "dia_semana": "Lunes",
+    "es_restringido": true
+  },
+  {
+    "id_horario": 3,
+    "id_curso": 1,
+    "nombre_grupo": "G1",
+    "id_bloque": 1,
+    "dia_semana": "Martes",
+    "es_restringido": true
+  },
+  {
+    "id_horario": 4,
+    "id_curso": 1,
+    "nombre_grupo": "G1",
+    "id_bloque": 2,
+    "dia_semana": "Martes",
+    "es_restringido": true
+  },
+  {
+    "id_horario": 5,
+    "id_curso": 1,
+    "nombre_grupo": "G1",
+    "id_bloque": 1,
+    "dia_semana": "Miércoles",
+    "es_restringido": true
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "COLUMN_NAME": "id_horario",
+    "DATA_TYPE": "int"
+  },
+  {
+    "COLUMN_NAME": "id_curso",
+    "DATA_TYPE": "int"
+  },
+  {
+    "COLUMN_NAME": "nombre_grupo",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "COLUMN_NAME": "id_bloque",
+    "DATA_TYPE": "int"
+  },
+  {
+    "COLUMN_NAME": "dia_semana",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "COLUMN_NAME": "es_restringido",
+    "DATA_TYPE": "bit"
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "Grupos": {
+    "columns": [
+      {
+        "COLUMN_NAME": "id_grupo",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "id_curso",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "nombre_grupo",
+        "DATA_TYPE": "varchar"
+      }
+    ],
+    "data": [
+      {
+        "id_grupo": 1,
+        "id_curso": 1,
+        "nombre_grupo": "G1"
+      },
+      {
+        "id_grupo": 2,
+        "id_curso": 1,
+        "nombre_grupo": "G2"
+      },
+      {
+        "id_grupo": 3,
+        "id_curso": 1,
+        "nombre_grupo": "G3"
+      },
+      {
+        "id_grupo": 4,
+        "id_curso": 1,
+        "nombre_grupo": "G4"
+      },
+      {
+        "id_grupo": 5,
+        "id_curso": 1,
+        "nombre_grupo": "G5"
+      }
+    ]
+  },
+  "Cursos": {
+    "columns": [
+      {
+        "COLUMN_NAME": "id_curso",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "codigo_curso",
+        "DATA_TYPE": "varchar"
+      },
+      {
+        "COLUMN_NAME": "nombre_curso",
+        "DATA_TYPE": "varchar"
+      },
+      {
+        "COLUMN_NAME": "creditos",
+        "DATA_TYPE": "int"
+      }
+    ],
+    "data": [
+      {
+        "id_curso": 1,
+        "codigo_curso": "CUR_GEN",
+        "nombre_curso": "Curso General",
+        "creditos": 4
+      }
+    ]
+  }
+}

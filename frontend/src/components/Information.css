@@ -1,0 +1,128 @@
+.info-container {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 100px);
+}
+
+.stats-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 900px;
+}
+
+.stats-title {
+  text-align: center;
+  color: #1e293b;
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  font-weight: 700;
+}
+
+.chart-wrapper {
+  display: flex;
+  height: 350px;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 2.5rem;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: right;
+  min-width: 40px;
+}
+
+.chart-area {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 0 1rem;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.bar:hover {
+  filter: brightness(1.1);
+  transform: scaleY(1.02);
+}
+
+.bar-value {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.bar-label {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-text {
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.empty-chart {
+    align-self: center;
+    color: #94a3b8;
+    font-style: italic;
+}

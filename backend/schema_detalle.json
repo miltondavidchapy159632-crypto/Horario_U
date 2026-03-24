@@ -1,0 +1,18 @@
+[
+  {
+    "COLUMN_NAME": "id_detalle",
+    "DATA_TYPE": "int"
+  },
+  {
+    "COLUMN_NAME": "id_grupo",
+    "DATA_TYPE": "int"
+  },
+  {
+    "COLUMN_NAME": "dia_semana",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "COLUMN_NAME": "id_bloque",
+    "DATA_TYPE": "int"
+  }
+]

@@ -1,0 +1,129 @@
+.course-management-container {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 500px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.course-form-section {
+  flex: 0 0 350px;
+  background-color: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.course-table-section {
+  flex: 1;
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.course-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group-row {
+  display: flex;
+  align-items: center;
+}
+
+.form-group-row label {
+  flex: 0 0 140px;
+  margin-right: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: calc(140px + 1rem); /* Match the label width + margin */
+}
+
+/* Modern Table Styles */
+.table-responsive {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: white;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modern-table th {
+  background-color: #f8fafc;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border-color);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.modern-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.modern-table tr:last-child td {
+  border-bottom: none;
+}
+
+.modern-table tr:hover td {
+  background-color: #f1f5f9;
+  color: var(--primary-color);
+}
+
+.empty-state {
+  padding: 3rem !important;
+  color: #94a3b8 !important;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .course-management-container {
+    flex-direction: column;
+  }
+  
+  .course-form-section {
+    flex: 1;
+  }
+  
+  .form-group-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .form-actions {
+    padding-left: 0;
+  }
+}

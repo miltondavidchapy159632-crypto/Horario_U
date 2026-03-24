@@ -1,0 +1,87 @@
+{
+  "Mi_Horario": {
+    "columns": [
+      {
+        "COLUMN_NAME": "id_horario",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "id_periodo",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "dia_semana",
+        "DATA_TYPE": "varchar"
+      },
+      {
+        "COLUMN_NAME": "id_bloque",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "id_curso",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "actividad_personal",
+        "DATA_TYPE": "varchar"
+      },
+      {
+        "COLUMN_NAME": "es_restringido",
+        "DATA_TYPE": "bit"
+      }
+    ],
+    "sampleData": []
+  },
+  "Detalle_Grupo_Horario": {
+    "columns": [
+      {
+        "COLUMN_NAME": "id_detalle",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "id_grupo",
+        "DATA_TYPE": "int"
+      },
+      {
+        "COLUMN_NAME": "dia_semana",
+        "DATA_TYPE": "varchar"
+      },
+      {
+        "COLUMN_NAME": "id_bloque",
+        "DATA_TYPE": "int"
+      }
+    ],
+    "sampleData": [
+      {
+        "id_detalle": 1,
+        "id_grupo": 1,
+        "dia_semana": "Lunes",
+        "id_bloque": 1
+      },
+      {
+        "id_detalle": 2,
+        "id_grupo": 1,
+        "dia_semana": "Lunes",
+        "id_bloque": 2
+      },
+      {
+        "id_detalle": 3,
+        "id_grupo": 1,
+        "dia_semana": "Martes",
+        "id_bloque": 1
+      },
+      {
+        "id_detalle": 4,
+        "id_grupo": 1,
+        "dia_semana": "Martes",
+        "id_bloque": 2
+      },
+      {
+        "id_detalle": 5,
+        "id_grupo": 1,
+        "dia_semana": "Miércoles",
+        "id_bloque": 1
+      }
+    ]
+  }
+}
