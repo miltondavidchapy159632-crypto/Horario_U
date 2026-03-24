@@ -15,7 +15,7 @@ const getDashboard = async (req, res) => {
     const pool = await poolPromise;
 
     const query = `
-      SELECT pb.id_bloque, pb.hora_inicio, pb.hora_fin, mh.dia_semana, mh.id_curso, mh.nombre_grupo AS actividad_personal, mh.es_restringido,
+      SELECT mh.id_horario, pb.id_bloque, pb.hora_inicio, pb.hora_fin, mh.dia_semana, mh.id_curso, mh.nombre_grupo AS actividad_personal, mh.es_restringido,
              c.codigo_curso, c.nombre_curso, cat.nombre_categoria
       FROM Plantilla_Bloques pb
       LEFT JOIN Mi_Horario mh ON pb.id_bloque = mh.id_bloque

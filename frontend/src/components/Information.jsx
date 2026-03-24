@@ -4,6 +4,9 @@ import './Information.css';
 const Information = () => {
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDay, setSelectedDay] = useState('Semana completa');
+
+  const days = ['Semana completa', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
   const colors = {
     'Universidad': '#1A5276',
@@ -12,32 +15,57 @@ const Information = () => {
     'Entrenamiento': '#E67E22'
   };
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await fetch('/api/stats');
-        if (res.ok) {
-          const data = await res.json();
-          setStats(data);
-        }
-      } catch (err) {
-        console.error('Error fetching stats:', err);
-      } finally {
-        setLoading(false);
+  const formatHours = (decimalHours) => {
+    const h = Math.floor(decimalHours);
+    const m = Math.round((decimalHours - h) * 60);
+    if (h === 0) return `${m} min`;
+    if (m === 0) return `${h} h`;
+    return `${h} h ${m} min`;
+  };
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      const url = selectedDay === 'Semana completa' 
+        ? `/api/stats/?t=${Date.now()}` 
+        : `/api/stats/?dia=${encodeURIComponent(selectedDay)}&t=${Date.now()}`;
+      console.log('Fetching stats from:', url);
+      
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
       }
-    };
+    } catch (err) {
+      console.error('Error fetching stats:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchStats();
-  }, []);
+  }, [selectedDay]);
 
-  if (loading) return <div className="info-container">Cargando estadísticas...</div>;
-
-  const maxHours = Math.max(...stats.map(s => s.hours), 5); // Al menos 5 para escala
+  const maxHours = Math.max(...stats.map(s => s.hours), 5);
 
   return (
     <div className="info-container">
       <div className="stats-card">
         <h2 className="stats-title">Horas Administradas</h2>
         
+        <div className="day-selector">
+          {days.map(day => (
+            <button 
+              key={day} 
+              className={`day-btn ${selectedDay === day ? 'active' : ''}`}
+              onClick={() => setSelectedDay(day)}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+
         <div className="chart-wrapper">
           <div className="y-axis">
             {[Math.round(maxHours), Math.round(maxHours/2), 0].map(val => (
@@ -56,15 +84,15 @@ const Information = () => {
                       height: `${height}%`, 
                       backgroundColor: colors[item.category] || '#ccc' 
                     }}
-                    title={`${item.category}: ${item.hours.toFixed(1)} horas`}
+                    title={`${item.category}: ${formatHours(item.hours)}`}
                   >
-                    <span className="bar-value">{item.hours.toFixed(1)}h</span>
+                    <span className="bar-value">{formatHours(item.hours)}</span>
                   </div>
                   <span className="bar-label">{item.category}</span>
                 </div>
               );
             }) : (
-              <div className="empty-chart">No hay datos registrados todavía.</div>
+              <div className="empty-chart"></div>
             )}
           </div>
         </div>
