@@ -79,6 +79,28 @@ const CourseManagement = () => {
     !inscribedCourses.some(insc => insc.nombre_grupo === g)
   );
 
+  const handleDeleteCourse = async (id_curso, nombre_grupo) => {
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar el curso y liberar el grupo ${nombre_grupo}?`)) return;
+    
+    try {
+      const res = await fetch('/api/enrollment/desinscribir-grupo', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_curso, nombre_grupo })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        fetchData();
+      } else {
+        alert('Error al eliminar: ' + data.message);
+      }
+    } catch (err) {
+      console.error('Error deleting course:', err);
+      alert('Error de red al intentar eliminar el curso.');
+    }
+  };
+
   return (
     <div className="course-management-container">
       {/* Lado Izquierdo: Formulario */}
@@ -169,8 +191,7 @@ const CourseManagement = () => {
                 <th>Nombre curso</th>
                 <th>Crédito</th>
                 <th>Grupo</th>
-                <th>Días</th>
-                <th>Hora</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -183,13 +204,20 @@ const CourseManagement = () => {
                     <td>{curso.nombre_curso}</td>
                     <td>{curso.creditos}</td>
                     <td>{curso.nombre_grupo}</td>
-                    <td>{curso.dias || 'Por definir'}</td>
-                    <td>{curso.rango_horas || 'Por definir'}</td>
+                    <td>
+                      <button 
+                        className="delete-course-btn" 
+                        onClick={() => handleDeleteCourse(curso.id_curso, curso.nombre_grupo)}
+                        title="Eliminar curso"
+                      >
+                        🗑️
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center empty-state">No hay cursos añadidos o inscritos actualmente</td>
+                  <td colSpan="5" className="text-center empty-state">No hay cursos añadidos o inscritos actualmente</td>
                 </tr>
               )}
             </tbody>

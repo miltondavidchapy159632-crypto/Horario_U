@@ -1,5 +1,17 @@
 const express = require('express');
 const { poolPromise } = require('./config/db');
+
+// --- EMERGENCY CRASH PROTECTOR ---
+process.on('uncaughtException', (err) => {
+  console.error('CRITICAL: Uncaught Exception:', err);
+  // Optional: monitor if we should exit, but for now we keep it alive
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('CRITICAL: Unhandled Rejection at:', promise, 'reason:', reason);
+});
+// ---------------------------------
+
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const actividadRoutes = require('./routes/actividadRoutes');

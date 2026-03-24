@@ -68,6 +68,40 @@ const inscribirGrupo = async (req, res) => {
   }
 };
 
+/**
+ * Elimina un grupo del horario (desinscripción).
+ */
+const desinscribirGrupo = async (req, res) => {
+  const { id_curso, nombre_grupo } = req.body;
+
+  if (!id_curso || !nombre_grupo) {
+    return res.status(400).json({ message: 'El id_curso y el nombre del grupo son requeridos.' });
+  }
+
+  try {
+    const pool = await poolPromise;
+    const query = `
+      DELETE FROM Mi_Horario 
+      WHERE id_curso = @id_curso AND nombre_grupo = @nombre_grupo AND es_restringido = 1
+    `;
+
+    const result = await pool.request()
+      .input('id_curso', id_curso)
+      .input('nombre_grupo', nombre_grupo)
+      .query(query);
+
+    if (result.rowsAffected[0] > 0) {
+      res.status(200).json({ message: 'Curso desinscrito exitosamente.' });
+    } else {
+      res.status(404).json({ message: 'No se encontró el curso inscrito o ya fue eliminado.' });
+    }
+  } catch (error) {
+    console.error('Error al desinscribir el grupo:', error);
+    res.status(500).json({ message: 'Error interno al desinscribir el grupo.', error });
+  }
+};
+
 module.exports = {
   inscribirGrupo,
+  desinscribirGrupo
 };

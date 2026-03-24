@@ -14,12 +14,15 @@ const config = {
 const poolPromise = new sql.ConnectionPool(config)
   .connect()
   .then((pool) => {
-    console.log('Conexión a SQL Server establecida.');
+    console.log('--- Conexión a SQL Server establecida con éxito ---');
     return pool;
   })
   .catch((err) => {
-    console.error('Error al conectar a SQL Server:', err);
-    throw err;
+    console.error('--- ERROR CRÍTICO DE CONEXIÓN A DB ---');
+    console.error(err);
+    // No lanzamos el error para evitar que el proceso Node se cierre.
+    // Los controladores recibirán un error de conexión al intentar usar el pool.
+    return null; 
   });
 
 module.exports = {
