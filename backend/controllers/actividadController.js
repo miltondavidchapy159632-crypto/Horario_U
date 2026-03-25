@@ -1,4 +1,4 @@
-const { poolPromise } = require('../config/db');
+const { getPool } = require('../config/db');
 
 /**
  * Añade una actividad personal al horario.
@@ -12,7 +12,7 @@ const addActividadPersonal = async (req, res) => {
   }
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
 
     // Verificar si el bloque ya está ocupado
     const checkQuery = `
@@ -74,7 +74,7 @@ const moveActividad = async (req, res) => {
   }
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const query = `
       UPDATE Mi_Horario 
       SET id_bloque = @nuevo_id_bloque, dia_semana = @nuevo_dia_semana
@@ -101,7 +101,7 @@ const deleteActividad = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const query = `
       DELETE FROM Mi_Horario 
       WHERE id_horario = @id AND es_restringido = 0

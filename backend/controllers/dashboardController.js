@@ -1,4 +1,4 @@
-const { poolPromise } = require('../config/db');
+const { getPool } = require('../config/db');
 
 /**
  * Obtiene el horario completo para renderizar el dashboard.
@@ -12,7 +12,7 @@ const getDashboard = async (req, res) => {
   }
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
 
     const query = `
       SELECT mh.id_horario, pb.id_bloque, pb.hora_inicio, pb.hora_fin, mh.dia_semana, mh.id_curso, mh.nombre_grupo AS actividad_personal, mh.es_restringido,

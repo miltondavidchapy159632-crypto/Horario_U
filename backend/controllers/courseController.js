@@ -1,8 +1,8 @@
-const { poolPromise } = require('../config/db');
+const { getPool } = require('../config/db');
 
 const getCatalog = async (req, res) => {
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const cursosQuery = `SELECT * FROM Cursos`;
     const gruposQuery = `SELECT DISTINCT nombre_grupo_tipo FROM Reglas_Grupos_UNP`;
     
@@ -21,7 +21,7 @@ const getCatalog = async (req, res) => {
 
 const getInscribedCourses = async (req, res) => {
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     // Mi_Horario tiene id_curso y nombre_grupo. Seleccionamos lo que hay.
     const query = `
       SELECT c.codigo_curso, c.nombre_curso, c.creditos, mh.nombre_grupo, mh.id_curso,

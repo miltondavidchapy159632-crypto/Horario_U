@@ -1,4 +1,4 @@
-const { poolPromise } = require('../config/db');
+const { getPool } = require('../config/db');
 
 /**
  * Inscribe un grupo en el horario del usuario.
@@ -13,7 +13,7 @@ const inscribirGrupo = async (req, res) => {
   }
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
 
     // Verificar si los bloques están ocupados por otro CURSO (es_restringido = 1)
     const checkQuery = `
@@ -79,7 +79,7 @@ const desinscribirGrupo = async (req, res) => {
   }
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const query = `
       DELETE FROM Mi_Horario 
       WHERE id_curso = @id_curso AND nombre_grupo = @nombre_grupo AND es_restringido = 1

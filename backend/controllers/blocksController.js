@@ -1,8 +1,8 @@
-const { poolPromise } = require('../config/db');
+const { getPool } = require('../config/db');
 
 const getBlocks = async (req, res) => {
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const query = `SELECT id_bloque, etiqueta, hora_inicio, hora_fin FROM Plantilla_Bloques ORDER BY hora_inicio`;
     const result = await pool.request().query(query);
     res.status(200).json(result.recordset);
@@ -19,7 +19,7 @@ const addBlock = async (req, res) => {
   }
 
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const query = `
       INSERT INTO Plantilla_Bloques (etiqueta, hora_inicio, hora_fin)
       VALUES (@etiqueta, @hora_inicio, @hora_fin)

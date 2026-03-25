@@ -1,4 +1,4 @@
-const { poolPromise } = require('../config/db');
+const { getPool } = require('../config/db');
 
 /**
  * Obtiene las estadísticas de horas por categoría.
@@ -8,7 +8,7 @@ const getStats = async (req, res) => {
   console.log('--- GET /api/stats/ hit ---');
   console.log('Query Params:', req.query);
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
 
     let whereClause = '';
     if (dia && dia !== 'Semana completa') {

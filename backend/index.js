@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // Test database connection
 app.get('/test-db', async (req, res) => {
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     const result = await pool.request().query('SELECT 1 AS test');
     res.status(200).json({ message: 'Conexión exitosa', result: result.recordset });
   } catch (error) {
