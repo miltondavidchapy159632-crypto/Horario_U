@@ -183,11 +183,12 @@ const ScheduleGrid = () => {
           if (!uniqueBlocksMap.has(item.id_bloque)) {
             uniqueBlocksMap.set(item.id_bloque, {
               id_bloque: item.id_bloque,
-              hora: `${formatTime(item.hora_inicio)}-${formatTime(item.hora_fin)}`
+              hora: `${formatTime(item.hora_inicio)}-${formatTime(item.hora_fin)}`,
+              raw_hora_inicio: item.hora_inicio
             });
           }
         });
-        setTimeSlots(Array.from(uniqueBlocksMap.values()).sort((a,b) => a.id_bloque - b.id_bloque));
+        setTimeSlots(Array.from(uniqueBlocksMap.values()).sort((a,b) => new Date(a.raw_hora_inicio) - new Date(b.raw_hora_inicio)));
       }
     } catch (error) {
       console.error('Error fetching dashboard:', error);

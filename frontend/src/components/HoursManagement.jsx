@@ -10,12 +10,14 @@ const HoursManagement = () => {
 
   const [addedHours, setAddedHours] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null); // Track which block is being edited
 
   const fetchBlocks = async () => {
     try {
       const res = await fetch('/api/blocks');
       const data = await res.json();
-      setAddedHours(data);
+      const sortedData = [...data].sort((a, b) => new Date(a.hora_inicio) - new Date(b.hora_inicio));
+      setAddedHours(sortedData);
       setLoading(false);
     } catch (err) {
       console.error('Error cargando bloques:', err);
@@ -33,13 +35,42 @@ const HoursManagement = () => {
     });
   };
 
-  const handleAddHour = async (e) => {
+  const handleEditClick = (hour) => {
+    setEditingId(hour.id_bloque);
+    setFormData({
+      horaInicio: formatTime(hour.hora_inicio) || hour.hora_inicio,
+      horaFin: formatTime(hour.hora_fin) || hour.hora_fin,
+      etiqueta: hour.etiqueta
+    });
+    // Scroll to form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setFormData({
+      horaInicio: '',
+      horaFin: '',
+      etiqueta: 'Clase Regular'
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.horaInicio || !formData.horaFin) return;
 
+    // Basic frontend validation
+    if (formData.horaInicio >= formData.horaFin) {
+        alert('La hora de inicio debe ser menor a la hora de fin.');
+        return;
+    }
+
+    const method = editingId ? 'PUT' : 'POST';
+    const url = editingId ? `/api/blocks/${editingId}` : '/api/blocks';
+
     try {
-      const res = await fetch('/api/blocks', {
-        method: 'POST',
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json'
         },
@@ -52,14 +83,11 @@ const HoursManagement = () => {
 
       if (res.ok) {
         fetchBlocks();
-        setFormData({
-          ...formData,
-          horaInicio: '',
-          horaFin: ''
-        });
-        alert('Bloque registrado correctamente en la base de datos.');
+        handleCancelEdit();
+        alert(editingId ? 'Bloque actualizado correctamente.' : 'Bloque registrado correctamente.');
       } else {
-        alert('Hubo un problema registrando el horario.');
+        const err = await res.json();
+        alert(`Error: ${err.message}`);
       }
     } catch (err) {
       console.error('Error guardando horario', err);
@@ -67,7 +95,23 @@ const HoursManagement = () => {
     }
   };
 
-  // Utility to format ISO time from SQL to HH:mm
+  const handleDelete = async (id) => {
+    if (!window.confirm('¿Estás seguro de eliminar este bloque?')) return;
+
+    try {
+        const res = await fetch(`/api/blocks/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            fetchBlocks();
+        } else {
+            const err = await res.json();
+            alert(`Error: ${err.message}`);
+        }
+    } catch (err) {
+        console.error('Error eliminando bloque:', err);
+        alert('Error en conexión con el servidor.');
+    }
+  };
+
   const formatTime = (isoString) => {
     if (!isoString) return '';
     const date = new Date(isoString);
@@ -79,9 +123,11 @@ const HoursManagement = () => {
     <div className="course-management-container">
       {/* Lado Izquierdo: Formulario */}
       <div className="course-form-section">
-        <h2 className="section-title">Añadir Nueva Hora</h2>
+        <h2 className="section-title">
+            {editingId ? 'Editar Bloque' : 'Añadir Nueva Hora'}
+        </h2>
         
-        <form onSubmit={handleAddHour} className="course-form">
+        <form onSubmit={handleSubmit} className="course-form">
           <div className="form-group-row">
             <label>Hora Inicio</label>
             <input 
@@ -119,8 +165,15 @@ const HoursManagement = () => {
             />
           </div>
 
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">Registrar en Plantilla</button>
+          <div className="form-actions" style={{ display: 'flex', gap: '10px' }}>
+            <button type="submit" className="btn btn-primary">
+                {editingId ? 'Actualizar Bloque' : 'Registrar en Plantilla'}
+            </button>
+            {editingId && (
+                <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>
+                    Cancelar
+                </button>
+            )}
           </div>
         </form>
       </div>
@@ -137,11 +190,12 @@ const HoursManagement = () => {
                 <th>Etiqueta</th>
                 <th>Hora Inicio</th>
                 <th>Hora Fin</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan="4" className="text-center">Cargando...</td></tr>
+                <tr><td colSpan="5" className="text-center">Cargando...</td></tr>
               ) : addedHours.length > 0 ? (
                 addedHours.map(hour => (
                   <tr key={hour.id_bloque}>
@@ -149,11 +203,31 @@ const HoursManagement = () => {
                     <td>{hour.etiqueta}</td>
                     <td>{formatTime(hour.hora_inicio) || hour.hora_inicio}</td>
                     <td>{formatTime(hour.hora_fin) || hour.hora_fin}</td>
+                    <td>
+                        <div className="action-buttons" style={{ display: 'flex', gap: '8px' }}>
+                            <button 
+                                className="action-btn edit" 
+                                onClick={() => handleEditClick(hour)}
+                                title="Editar"
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}
+                            >
+                                ✏️
+                            </button>
+                            <button 
+                                className="action-btn delete" 
+                                onClick={() => handleDelete(hour.id_bloque)}
+                                title="Eliminar"
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center empty-state">No hay horas registradas en la plantilla.</td>
+                  <td colSpan="5" className="text-center empty-state">No hay horas registradas en la plantilla.</td>
                 </tr>
               )}
             </tbody>
