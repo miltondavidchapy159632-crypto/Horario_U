@@ -18,12 +18,17 @@ const actividadRoutes = require('./routes/actividadRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const blocksRoutes = require('./routes/blocksRoutes');
 const statsRoutes = require('./routes/statsRoutes');
+const plannerRoutes = require('./routes/plannerRoutes');
+
+const path = require('path');
+const { getPool } = require('./config/db');
 
 const app = express();
 const PORT = 3000;
 
 // Middleware
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.originalUrl}`);
   next();
@@ -48,6 +53,7 @@ app.use('/api/actividad', actividadRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/blocks', blocksRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/planner', plannerRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

@@ -5,10 +5,11 @@ import CourseManagement from './components/CourseManagement';
 import HoursManagement from './components/HoursManagement';
 import Information from './components/Information';
 import NotificationSentinel from './components/NotificationSentinel';
+import AcademicPlanner from './components/AcademicPlanner';
 
 function App() {
   const [activeTab, setActiveTab] = useState('Horario');
-  const tabs = ['Horario', 'Gestión de cursos', 'Gestión de Horas', 'Información'];
+  const tabs = ['Horario', 'Gestión de cursos', 'Gestión de Horas', 'Planificador', 'Información'];
 
   return (
     <div className="app-container">
@@ -28,6 +29,7 @@ function App() {
         {activeTab === 'Horario' && <ScheduleGrid />}
         {activeTab === 'Gestión de cursos' && <CourseManagement />}
         {activeTab === 'Gestión de Horas' && <HoursManagement />}
+        {activeTab === 'Planificador' && <AcademicPlanner />}
         {activeTab === 'Información' && <Information />}
       </div>
     </div>
