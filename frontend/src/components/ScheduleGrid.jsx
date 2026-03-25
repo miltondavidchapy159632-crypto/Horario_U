@@ -344,11 +344,25 @@ const ScheduleGrid = () => {
     );
   };
 
+  const [notificationsEnabled, setNotificationsEnabled] = useState(Notification.permission === 'granted');
+
+  const requestNotificationPermission = async () => {
+    const permission = await Notification.requestPermission();
+    setNotificationsEnabled(permission === 'granted');
+  };
+
   if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Cargando horario...</div>;
 
   return (
     <div className="schedule-grid-container">
-      <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', backgroundColor: 'var(--tab-bg)' }}>
+      <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', backgroundColor: 'var(--tab-bg)' }}>
+        {!notificationsEnabled ? (
+            <button onClick={requestNotificationPermission} className="btn btn-secondary" style={{ fontSize: '0.85rem', padding: '8px 12px' }}>
+                Activar Alertas (Sonido + Notificación) 🔊
+            </button>
+        ) : (
+            <span style={{ fontSize: '0.8rem', color: '#27ae60', fontWeight: '500' }}>Alertas activas 🔊🔔 ✅</span>
+        )}
         <button onClick={handleExportPDF} className="btn btn-primary" disabled={isExporting} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           {isExporting ? <span>⏳ Exportando...</span> : <>Exportar a PDF</>}
         </button>
@@ -370,10 +384,11 @@ const ScheduleGrid = () => {
         </div>
         <DroppableTrash />
       </DndContext>
+
       {isModalOpen && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
-            <h3 className="modal-title">Añadir Actividad</h3>
+            <h3 className="modal-title">{selectedCell.id_bloque && scheduleData.find(i => i.id_bloque === selectedCell.id_bloque && i.dia_semana === selectedCell.day && i.actividad_personal) ? 'Editar Actividad' : 'Añadir Actividad'}</h3>
             <form onSubmit={handleModalSubmit}>
               <div className="form-group">
                 <label>Nombre</label>
@@ -386,6 +401,7 @@ const ScheduleGrid = () => {
                   <option value="Estudio">Estudio</option>
                   <option value="Habitos">Hábitos</option>
                   <option value="Entrenamiento">Entrenamiento</option>
+                  <option value="Universidad">Universidad</option>
                 </select>
               </div>
               <div className="modal-actions">

@@ -4,6 +4,7 @@ import ScheduleGrid from './components/ScheduleGrid';
 import CourseManagement from './components/CourseManagement';
 import HoursManagement from './components/HoursManagement';
 import Information from './components/Information';
+import NotificationSentinel from './components/NotificationSentinel';
 
 function App() {
   const [activeTab, setActiveTab] = useState('Horario');
@@ -11,6 +12,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <NotificationSentinel />
       <div className="tabs-container">
         {tabs.map((tab) => (
           <button
