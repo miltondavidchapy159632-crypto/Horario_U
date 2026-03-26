@@ -6,6 +6,7 @@ import HoursManagement from './components/HoursManagement';
 import Information from './components/Information';
 import NotificationSentinel from './components/NotificationSentinel';
 import AcademicPlanner from './components/AcademicPlanner';
+import NotificationBell from './components/NotificationBell';
 
 function App() {
   const [activeTab, setActiveTab] = useState('Horario');
@@ -14,16 +15,21 @@ function App() {
   return (
     <div className="app-container">
       <NotificationSentinel />
-      <div className="tabs-container">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            className={`tab ${activeTab === tab ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
+      <div className="app-header">
+        <div className="tabs-container">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              className={`tab ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+        <div className="header-right">
+          <NotificationBell />
+        </div>
       </div>
       <div className="tab-content">
         {activeTab === 'Horario' && <ScheduleGrid />}

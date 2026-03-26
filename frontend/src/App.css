@@ -9,11 +9,19 @@
   flex-direction: column;
 }
 
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--tab-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding-right: 1.5rem;
+}
+
 .tabs-container {
   display: flex;
-  background-color: var(--tab-bg);
+  background-color: transparent;
   padding: 0 1rem;
-  border-bottom: 1px solid var(--border-color);
 }
 
 .tab {

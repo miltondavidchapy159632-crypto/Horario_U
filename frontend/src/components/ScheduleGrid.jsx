@@ -401,7 +401,6 @@ const ScheduleGrid = () => {
                   <option value="Estudio">Estudio</option>
                   <option value="Habitos">Hábitos</option>
                   <option value="Entrenamiento">Entrenamiento</option>
-                  <option value="Universidad">Universidad</option>
                 </select>
               </div>
               <div className="modal-actions">

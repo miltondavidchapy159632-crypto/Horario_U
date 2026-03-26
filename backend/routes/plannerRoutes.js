@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { getHitos, addHito, deleteHito, uploadDocument, getDocuments } = require('../controllers/plannerController');
+const { getHitos, addHito, deleteHito, uploadDocument, getDocuments, getAllUpcomingHitos } = require('../controllers/plannerController');
 
 const router = express.Router();
 
@@ -20,6 +20,7 @@ const upload = multer({ storage: storage });
 
 // Rutas de Hitos
 router.get('/hitos', getHitos);
+router.get('/all-hitos', getAllUpcomingHitos);
 router.post('/hitos', addHito);
 router.delete('/hitos/:id', deleteHito);
 

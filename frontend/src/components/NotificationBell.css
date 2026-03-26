@@ -1,0 +1,160 @@
+.notification-bell-container {
+    position: relative;
+    display: inline-block;
+}
+
+.bell-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    backdrop-filter: blur(10px);
+    font-size: 1.4rem;
+}
+
+.bell-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.bell-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.bell-dropdown {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    border: 1px solid rgba(255,255,255,0.5);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-header {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-header h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+.count-label {
+    font-size: 0.75rem;
+    background: #f0f2f5;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #7f8c8d;
+}
+
+.dropdown-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.dropdown-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 15px;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.item-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+
+.type-examen .item-dot { background: #e74c3c; box-shadow: 0 0 5px #e74c3c; }
+.type-práctica .item-dot { background: #f39c12; }
+.type-exposición .item-dot { background: #3498db; }
+.type-tarea .item-dot { background: #27ae60; }
+
+.item-content {
+    flex: 1;
+}
+
+.item-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #34495e;
+}
+
+.item-meta {
+    margin: 2px 0 0 0;
+    font-size: 0.75rem;
+    color: #95a5a6;
+}
+
+.dropdown-empty {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.dropdown-empty p { margin: 0; font-weight: 600; color: #7f8c8d; }
+.dropdown-empty span { font-size: 0.8rem; color: #bdc3c7; }
+
+.dropdown-footer {
+    padding: 12px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #3498db;
+    background: #f8f9fa;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.dropdown-footer:hover {
+    background: #edf2f7;
+    text-decoration: underline;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

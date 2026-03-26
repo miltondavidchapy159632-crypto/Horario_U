@@ -115,10 +115,32 @@ const getDocuments = async (req, res) => {
     }
 };
 
+/**
+ * Obtiene todos los hitos próximos de todos los cursos registrados.
+ */
+const getAllUpcomingHitos = async (req, res) => {
+    try {
+        const pool = await getPool();
+        const query = `
+            SELECT h.*, c.nombre_curso, c.codigo_curso
+            FROM Hitos_Academicos h
+            JOIN Cursos c ON h.id_curso = c.id_curso
+            WHERE h.fecha >= DATEADD(hour, -5, GETDATE()) 
+            ORDER BY h.fecha ASC
+        `;
+        const result = await pool.request().query(query);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        console.error('[Planner] Error en getAllUpcomingHitos:', err);
+        res.status(500).json({ message: 'Error al obtener hitos globales.', error: err.message });
+    }
+};
+
 module.exports = {
     getHitos,
     addHito,
     deleteHito,
     uploadDocument,
-    getDocuments
+    getDocuments,
+    getAllUpcomingHitos
 };

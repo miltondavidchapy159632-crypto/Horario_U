@@ -54,6 +54,15 @@ const AcademicPlanner = () => {
 
     const handleHitoSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validación de fecha a futuro
+        const selectedDate = new Date(hitoData.fecha);
+        const now = new Date();
+        if (selectedDate < now) {
+            alert('¡Ups! No puedes registrar eventos en el pasado. Selecciona una fecha de hoy en adelante.');
+            return;
+        }
+
         try {
             const res = await fetch('/api/planner/hitos', {
                 method: 'POST',
@@ -64,6 +73,8 @@ const AcademicPlanner = () => {
                 setShowHitoForm(false);
                 setHitoData({ titulo: '', tipo: 'Examen', fecha: '', descripcion: '' });
                 fetchPlannerData(selectedCourse);
+                // Notificar a la campanita de que hay cambios
+                window.dispatchEvent(new Event('hitosUpdated'));
             } else {
                 const errData = await res.json();
                 alert(`Error: ${errData.message}\nDetalle: ${errData.error || 'N/A'}`);
@@ -102,7 +113,11 @@ const AcademicPlanner = () => {
         if (!window.confirm('¿Eliminar este hito?')) return;
         try {
             const res = await fetch(`/api/planner/hitos/${id}`, { method: 'DELETE' });
-            if (res.ok) fetchPlannerData(selectedCourse);
+            if (res.ok) {
+                fetchPlannerData(selectedCourse);
+                // Notificar a la campanita de que hay cambios
+                window.dispatchEvent(new Event('hitosUpdated'));
+            }
         } catch (err) {
             console.error('Error deleting hito:', err);
         }
@@ -199,7 +214,14 @@ const AcademicPlanner = () => {
                             </div>
                             <div className="form-group">
                                 <label>Fecha y Hora</label>
-                                <input type="datetime-local" className="form-control" value={hitoData.fecha} onChange={e => setHitoData({...hitoData, fecha: e.target.value})} required />
+                                <input 
+                                    type="datetime-local" 
+                                    className="form-control" 
+                                    value={hitoData.fecha} 
+                                    min={new Date().toISOString().slice(0, 16)}
+                                    onChange={e => setHitoData({...hitoData, fecha: e.target.value})} 
+                                    required 
+                                />
                             </div>
                             <div className="form-group">
                                 <label>Notas (Opcional)</label>

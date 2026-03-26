@@ -43,17 +43,19 @@ const NotificationSentinel = () => {
     setNotificationsEnabled(Notification.permission === 'granted');
   }, []);
 
-  // Monitor Notification permissions externally (to update UI if changed in browser settings)
+  // Latido del Sistema (Web Worker para evitar suspensión del navegador)
   useEffect(() => {
     if (!notificationsEnabled) return;
 
+    const worker = new Worker('/timer-worker.js');
+    
     const checkActivities = () => {
         const now = new Date();
         const daysMap = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
         const currentDay = daysMap[now.getDay()];
         const currentHM = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         
-        console.log(`[Sentinel] Revisando actividades para hoy: ${currentDay} (${currentHM})...`);
+        console.log(`[Sentinel] Latido recibido. Revisando: ${currentDay} (${currentHM})...`);
 
         scheduleData.forEach(item => {
             const startHM = formatTime(item.hora_inicio);
@@ -61,39 +63,7 @@ const NotificationSentinel = () => {
 
             if (item.dia_semana === currentDay && startHM === currentHM) {
                 if (!notifiedBlocksRef.current.has(blockKey)) {
-                    const title = item.actividad_personal || item.nombre_curso || 'Actividad';
-                    console.log(`[Sentinel] ¡ALERTA ACTIVADA! Iniciando: ${title}`);
-                    
-                    alertSound.current.play().catch(() => {});
-
-                    // 2. Notificación OS (Vía Service Worker con MÁXIMA PRIORIDAD)
-                    if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker.ready.then(reg => {
-                            reg.showNotification("📅 ¡ALERTA DE HORARIO!", {
-                                body: `Iniciando: ${title} (${startHM})`,
-                                icon: '/favicon.ico',
-                                badge: '/favicon.ico',
-                                requireInteraction: true,  // No se quita hasta que el usuario la vea
-                                silent: false,
-                                tag: blockKey,
-                                renotify: true,
-                                data: { 
-                                    url: window.location.origin,
-                                    time: startHM 
-                                }
-                            });
-                        });
-                    } else {
-                        // Fallback
-                        new Notification("📅 ¡Hora de iniciar!", { 
-                            body: `${title} (${startHM})`, 
-                            icon: '/favicon.ico', 
-                            requireInteraction: true 
-                        });
-                    }
-
-                    setActiveAlert({ title, time: startHM });
-                    notifiedBlocksRef.current.add(blockKey);
+                    triggerAlert(item, startHM, blockKey);
                 }
             }
         });
@@ -101,9 +71,37 @@ const NotificationSentinel = () => {
         if (currentHM === "00:00") notifiedBlocksRef.current.clear();
     };
 
-    const interval = setInterval(checkActivities, 30000);
-    checkActivities();
-    return () => clearInterval(interval);
+    const triggerAlert = (item, startHM, blockKey) => {
+        const title = item.actividad_personal || item.nombre_curso || 'Actividad';
+        console.log(`[Sentinel] ¡ALERTA ACTIVADA! Iniciando: ${title}`);
+        
+        alertSound.current.play().catch(e => {
+            console.warn("[Sentinel] Audio bloqueado por el navegador. Se requiere interacción previa.", e);
+        });
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(reg => {
+                reg.showNotification("📅 ¡HORA DE INICIAR!", {
+                    body: `Comienza: ${title} (${startHM})`,
+                    icon: '/favicon.ico',
+                    badge: '/favicon.ico',
+                    requireInteraction: true,
+                    silent: false,
+                    tag: blockKey,
+                    renotify: true,
+                    vibrate: [200, 100, 200]
+                });
+            });
+        }
+        
+        setActiveAlert({ title, time: startHM });
+        notifiedBlocksRef.current.add(blockKey);
+    };
+
+    worker.onmessage = () => checkActivities();
+    checkActivities(); // Primera ejecución inmediata
+
+    return () => worker.terminate();
   }, [notificationsEnabled, scheduleData]);
 
   // Title Flash Logic
