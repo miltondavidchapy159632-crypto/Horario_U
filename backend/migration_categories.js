@@ -1,8 +1,8 @@
-const { poolPromise } = require('./config/db');
+const { getPool } = require('./config/db');
 
 async function migrate() {
   try {
-    const pool = await poolPromise;
+    const pool = await getPool();
     // 1. Create table
     await pool.request().query(`
       IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Categorias_Actividad' AND xtype='U')

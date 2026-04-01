@@ -1,20 +1,80 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #4361ee;
-  --primary-hover: #3a56d4;
-  --bg-color: #f7f9fc;
+  /* ---- Premium Color Palette ---- */
+  --primary-color: #3b82f6; /* Modern solid blue */
+  --primary-hover: #2563eb;
+  --primary-light: #eff6ff;
+  --secondary-color: #10b981; /* Emerald */
+  --accent-color: #8b5cf6; /* Violet */
+  
+  --bg-color: #f8fafc;
   --surface-color: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --border-color: #e2e8f0;
+  --border-light: rgba(226, 232, 240, 0.6);
+  --border-glow: rgba(59, 130, 246, 0.3);
+  
   --tab-bg: #f1f5f9;
   --tab-active-bg: #ffffff;
   --add-btn-bg: #f8fafc;
-  --add-btn-hover: #e2e8f0;
+  --add-btn-hover: #f1f5f9;
   --add-btn-color: #94a3b8;
+  
   --activity-bg: #fef08a; /* Yellow for "Entrenar" */
   --activity-text: #854d0e;
+  
+  /* ---- Premium Shadows (Soft & Deep) ---- */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.25);
+  --shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  
+  /* ---- Structural Tokens ---- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  /* ---- Motion / Animation ---- */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bouncy: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ---- Dark Mode Premium ---- */
+[data-theme='dark'] {
+  --primary-color: #60a5fa; /* Lighter blue for dark mode contrast */
+  --primary-hover: #3b82f6;
+  --primary-light: rgba(59, 130, 246, 0.15);
+  --secondary-color: #34d399; 
+  --accent-color: #a78bfa;
+  
+  --bg-color: #0b0f19; /* Deep modern dark blue/gray */
+  --surface-color: #111827; /* Solid dark card color */
+  --surface-color-glass: rgba(17, 24, 39, 0.85);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.04);
+  --border-glow: rgba(96, 165, 250, 0.3);
+  
+  --tab-bg: #0f172a;
+  --tab-active-bg: #1e293b;
+  --add-btn-bg: #1e293b;
+  --add-btn-hover: #334155;
+  --add-btn-color: #64748b;
+  
+  --activity-bg: #1e293b;
+  --activity-text: #f8fafc;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 25px rgba(96, 165, 250, 0.15);
+  --shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -26,14 +86,34 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-color);
+  background-image: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.04), transparent 25%),
+                    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.04), transparent 25%);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  background-attachment: fixed;
+}
+
+/* Custom Scrollbar for better UI */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
 
 #root {
   min-height: 100vh;
-  padding: 2rem;
+  width: 100%;
+  padding: 0;
   display: flex;
-  justify-content: center;
 }

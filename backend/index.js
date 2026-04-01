@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const express = require('express');
 const { poolPromise } = require('./config/db');
 
@@ -20,7 +22,6 @@ const blocksRoutes = require('./routes/blocksRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 const plannerRoutes = require('./routes/plannerRoutes');
 
-const path = require('path');
 const { getPool } = require('./config/db');
 
 const app = express();

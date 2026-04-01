@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { DndContext, useDraggable, useDroppable, closestCenter } from '@dnd-kit/core';
@@ -6,13 +7,29 @@ import { CSS } from '@dnd-kit/utilities';
 
 const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 
-// Helper to format ISO date to readable time "HH:MM"
 const formatTime = (dateString) => {
   if (!dateString) return '';
   const date = new Date(dateString);
   const hours = date.getUTCHours().toString().padStart(2, '0');
   const minutes = date.getUTCMinutes().toString().padStart(2, '0');
   return `${hours}:${minutes}`;
+};
+
+// --- Colores Dinámicos Premium para Cursos ---
+const COURSE_COLORS = [
+  { bg: '#d1fae5', text: '#064e3b' }, // Mint
+  { bg: '#dbeafe', text: '#1e3a8a' }, // Blue
+  { bg: '#f3e8ff', text: '#581c87' }, // Purple
+  { bg: '#fce7f3', text: '#831843' }, // Pink
+  { bg: '#ffedd5', text: '#7c2d12' }, // Peach
+  { bg: '#e0e7ff', text: '#312e81' }, // Indigo
+];
+
+const getCourseColors = (courseId) => {
+  if (!courseId) return { bg: '#e2e8f0', text: '#1e293b' }; // Default Grey
+  const numId = typeof courseId === 'string' ? courseId.charCodeAt(0) + courseId.charCodeAt(courseId.length - 1) : courseId;
+  const index = numId % COURSE_COLORS.length;
+  return COURSE_COLORS[index];
 };
 
 const DraggableActivity = ({ activity, day, id_bloque, colors, onEdit }) => {
@@ -22,25 +39,29 @@ const DraggableActivity = ({ activity, day, id_bloque, colors, onEdit }) => {
     disabled: !!activity.es_restringido
   });
 
+  const isCourse = activity.es_restringido;
+  const courseTheme = isCourse ? getCourseColors(activity.id_curso) : null;
+  const bgColor = isCourse ? courseTheme.bg : (colors[activity.nombre_categoria] || '#fef08a');
+  const textColor = isCourse ? courseTheme.text : (activity.nombre_categoria ? '#ffffff' : '#854d0e');
+
   const style = {
     transform: CSS.Translate.toString(transform),
-    backgroundColor: colors[activity.nombre_categoria] || (activity.es_restringido ? '#1A5276' : '#fef08a'),
-    zIndex: isDragging ? 1000 : 1,
-    opacity: isDragging ? 0.6 : 1,
+    backgroundColor: bgColor,
+    zIndex: isDragging ? 2000 : 1,
+    opacity: isDragging ? 0.8 : 1,
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    padding: '4px',
+    padding: '6px',
     boxSizing: 'border-box',
     width: '100%',
     height: '100%',
-    cursor: activity.es_restringido ? 'default' : 'grab'
+    cursor: isCourse ? 'default' : 'grab'
   };
 
-  const textColor = activity.nombre_categoria ? '#ffffff' : '#854d0e';
   const title = activity.actividad_personal || `Curso ${activity.id_curso}`;
 
   return (
@@ -54,10 +75,10 @@ const DraggableActivity = ({ activity, day, id_bloque, colors, onEdit }) => {
       {activity.es_restringido ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden' }}>
           <span style={{ fontWeight: 'bold', fontSize: '0.85rem', color: textColor }}>{activity.codigo_curso}</span>
-          <span style={{ fontSize: '0.75rem', lineHeight: '1.1', color: textColor, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', opacity: 0.9 }}>
+          <span style={{ fontSize: '0.75rem', lineHeight: '1.2', color: textColor, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', opacity: 0.95 }}>
             {activity.nombre_curso}
           </span>
-          <span style={{ fontSize: '0.7rem', fontWeight: '600', color: textColor, marginTop: '2px', opacity: 0.8 }}>({title})</span>
+          <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: textColor, marginTop: '2px', opacity: 0.85 }}>({title})</span>
         </div>
       ) : (
         <>
@@ -110,24 +131,28 @@ const DroppableTrash = () => {
       right: '30px',
       width: '70px',
       height: '70px',
-      backgroundColor: isOver ? '#e74c3c' : '#bdc3c7',
+      backgroundColor: isOver ? '#ef4444' : 'rgba(255, 255, 255, 0.9)',
       borderRadius: '50%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+      boxShadow: isOver ? '0 10px 25px rgba(239, 68, 68, 0.4)' : '0 4px 15px rgba(0,0,0,0.1)',
+      backdropFilter: 'blur(8px)',
       transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
       zIndex: 1000,
-      transform: isOver ? 'scale(1.2)' : 'scale(1)',
+      transform: isOver ? 'scale(1.2) translateY(-5px)' : 'scale(1)',
       cursor: 'pointer'
     };
+
+    const iconColor = isOver ? 'white' : '#94a3b8';
   
-    return (
+    return createPortal(
       <div ref={setNodeRef} style={style} title="Arrastra aquí para eliminar">
-        <svg fill="white" viewBox="0 0 24 24" width="35" height="35">
+        <svg fill={iconColor} viewBox="0 0 24 24" width="30" height="30" style={{ transition: 'fill 0.2s' }}>
           <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
         </svg>
-      </div>
+      </div>,
+      document.body
     );
   };
 
@@ -344,25 +369,11 @@ const ScheduleGrid = () => {
     );
   };
 
-  const [notificationsEnabled, setNotificationsEnabled] = useState(Notification.permission === 'granted');
-
-  const requestNotificationPermission = async () => {
-    const permission = await Notification.requestPermission();
-    setNotificationsEnabled(permission === 'granted');
-  };
-
   if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Cargando horario...</div>;
 
   return (
     <div className="schedule-grid-container">
       <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', backgroundColor: 'var(--tab-bg)' }}>
-        {!notificationsEnabled ? (
-            <button onClick={requestNotificationPermission} className="btn btn-secondary" style={{ fontSize: '0.85rem', padding: '8px 12px' }}>
-                Activar Alertas (Sonido + Notificación) 🔊
-            </button>
-        ) : (
-            <span style={{ fontSize: '0.8rem', color: '#27ae60', fontWeight: '500' }}>Alertas activas 🔊🔔 ✅</span>
-        )}
         <button onClick={handleExportPDF} className="btn btn-primary" disabled={isExporting} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           {isExporting ? <span>⏳ Exportando...</span> : <>Exportar a PDF</>}
         </button>

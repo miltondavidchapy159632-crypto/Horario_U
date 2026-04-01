@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { getHitos, addHito, deleteHito, uploadDocument, getDocuments, getAllUpcomingHitos } = require('../controllers/plannerController');
+const { getHitos, addHito, deleteHito, uploadDocument, getDocuments, getAllUpcomingHitos, deleteDocument, analyzeSyllabus } = require('../controllers/plannerController');
 
 const router = express.Router();
 
@@ -27,5 +27,10 @@ router.delete('/hitos/:id', deleteHito);
 // Rutas de Documentos
 router.get('/documents', getDocuments);
 router.post('/upload', upload.single('archivo'), uploadDocument);
+
+router.delete('/documents/:id', deleteDocument);
+
+// Ruta de IA
+router.post('/analyze-ai', analyzeSyllabus);
 
 module.exports = router;

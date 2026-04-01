@@ -14,6 +14,10 @@ const AcademicPlanner = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploading, setUploading] = useState(false);
 
+    // AI States
+    const [analyzingId, setAnalyzingId] = useState(null);
+    const [aiHitos, setAiHitos] = useState(null);
+
     const fetchCourses = async () => {
         try {
             const res = await fetch('/api/courses/inscribed');
@@ -123,6 +127,70 @@ const AcademicPlanner = () => {
         }
     };
 
+    const deleteDocument = async (id) => {
+        if (!window.confirm('¿Estás seguro de que deseas eliminar este documento? Esta acción borrará el archivo permanentemente.')) return;
+        try {
+            const res = await fetch(`/api/planner/documents/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                fetchPlannerData(selectedCourse);
+                alert('Documento eliminado correctamente.');
+            }
+        } catch (err) {
+            console.error('Error deleting document:', err);
+        }
+    };
+
+    // === FUNCIONES DE IA ===
+    const handleAIAnalyze = async (id_doc) => {
+        setAnalyzingId(id_doc);
+        try {
+            const res = await fetch('/api/planner/analyze-ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_documento: id_doc })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                if (data.hitos && data.hitos.length > 0) {
+                    setAiHitos(data.hitos);
+                } else {
+                    alert('La IA leyó el documento pero no encontró hitos con fecha.');
+                }
+            } else {
+                alert(`Problema: ${data.message || 'Error desconocido'}`);
+            }
+        } catch (err) {
+            console.error('AI Error:', err);
+            alert('Error de conexión con el servidor.');
+        } finally {
+            setAnalyzingId(null);
+        }
+    };
+
+    const confirmAIHitos = async () => {
+        if (!aiHitos) return;
+        setLoading(true);
+        let saved = 0;
+        try {
+            for (const hito of aiHitos) {
+                const res = await fetch('/api/planner/hitos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...hito, id_curso: selectedCourse })
+                });
+                if (res.ok) saved++;
+            }
+            setAiHitos(null);
+            fetchPlannerData(selectedCourse);
+            window.dispatchEvent(new Event('hitosUpdated'));
+            alert(`Se guardaron ${saved} hitos en tu calendario.`);
+        } catch (err) {
+            console.error('AI Confirm Error:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="planner-container">
             <div className="planner-sidebar">
@@ -163,8 +231,18 @@ const AcademicPlanner = () => {
                                 <div className="document-list">
                                     {documents.map(doc => (
                                         <div key={doc.id_documento} className="document-card">
-                                            <span>{doc.nombre_archivo}</span>
-                                            <a href={`http://localhost:3000${doc.ruta_archivo}`} target="_blank" rel="noreferrer" className="btn-view">Ver PDF</a>
+                                            <span className="doc-name">{doc.nombre_archivo}</span>
+                                            <div className="doc-actions">
+                                                <a href={`http://localhost:3000${doc.ruta_archivo}`} target="_blank" rel="noreferrer" className="btn-view">Ver PDF</a>
+                                                <button
+                                                    className="btn-ai"
+                                                    onClick={() => handleAIAnalyze(doc.id_documento)}
+                                                    disabled={analyzingId === doc.id_documento}
+                                                >
+                                                    {analyzingId === doc.id_documento ? '🧠 Leyendo...' : '🧬 Analizar con IA'}
+                                                </button>
+                                                <button className="btn-delete-doc" onClick={() => deleteDocument(doc.id_documento)} title="Eliminar documento">🗑️</button>
+                                            </div>
                                         </div>
                                     ))}
                                     {documents.length === 0 && <p className="empty-text">No hay documentos subidos.</p>}
@@ -232,6 +310,32 @@ const AcademicPlanner = () => {
                                 <button type="submit" className="btn btn-primary">Añadir</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+            {/* MODAL: Resultados del Análisis IA */}
+            {aiHitos && (
+                <div className="modal-overlay">
+                    <div className="modal ai-results-modal">
+                        <h3>🧠 Resultados del Análisis IA</h3>
+                        <p>Encontré <strong>{aiHitos.length}</strong> hito(s). ¿Deseas añadirlos?</p>
+                        <div className="ai-preview-list">
+                            {aiHitos.map((h, i) => (
+                                <div key={i} className={`milestone-card type-${h.tipo?.toLowerCase()}`}>
+                                    <div className="milestone-info">
+                                        <span className="milestone-title">{h.tipo} — {h.titulo}</span>
+                                        <span className="milestone-date">📅 {h.fecha}</span>
+                                        {h.descripcion && <small style={{opacity:0.7}}>{h.descripcion}</small>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="modal-actions">
+                            <button className="btn btn-secondary" onClick={() => setAiHitos(null)}>Descartar</button>
+                            <button className="btn btn-primary" onClick={confirmAIHitos} disabled={loading}>
+                                {loading ? 'Guardando...' : `Añadir ${aiHitos.length} Hito(s)`}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,70 +1,112 @@
 .course-management-container {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   min-height: 500px;
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .course-form-section {
-  flex: 0 0 350px;
+  flex: 0 0 380px;
   background-color: var(--surface-color);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.course-form-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
 }
 
 .course-table-section {
   flex: 1;
   background-color: var(--surface-color);
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  padding: 2.5rem 2.5rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 2rem;
-  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0;
+  width: 40%; height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 4px;
 }
 
 .course-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .form-group-row {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .form-group-row label {
-  flex: 0 0 140px;
-  margin-right: 1rem;
   font-weight: 600;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-control {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--tab-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--border-glow);
+  background-color: var(--surface-color);
 }
 
 .form-actions {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   display: flex;
-  justify-content: flex-start;
-  padding-left: calc(140px + 1rem); /* Match the label width + margin */
+  justify-content: flex-end;
 }
 
-/* Modern Table Styles */
+.form-actions .btn {
+  width: 100%;
+}
+
+/* Modern List/Table Styles */
 .table-responsive {
   overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: var(--surface-color);
+  box-shadow: var(--shadow-sm);
 }
 
 .modern-table {
@@ -73,83 +115,85 @@
 }
 
 .modern-table th {
-  background-color: #f8fafc;
-  color: var(--text-primary);
-  font-weight: 600;
+  background-color: var(--tab-bg);
+  color: var(--text-secondary);
+  font-weight: 700;
   text-align: left;
-  padding: 0.75rem 1rem;
-  border-bottom: 2px solid var(--border-color);
-  font-size: 0.85rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid var(--border-light);
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.1em;
   white-space: nowrap;
 }
 
 .modern-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: background-color var(--transition-normal);
+  vertical-align: middle;
+}
+
+.modern-table tr {
+  transition: all var(--transition-normal);
 }
 
 .modern-table tr:last-child td {
   border-bottom: none;
 }
 
-.modern-table tr:hover td {
-  background-color: #f1f5f9;
-  color: var(--primary-color);
+.modern-table tr:hover {
+  background-color: var(--tab-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+[data-theme='dark'] .modern-table tr:hover {
+  background-color: rgba(255,255,255,0.02);
 }
 
 .empty-state {
-  padding: 3rem !important;
-  color: #94a3b8 !important;
+  padding: 4rem 2rem !important;
+  color: var(--text-secondary) !important;
   font-style: italic;
+  font-size: 1.1rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .course-management-container {
     flex-direction: column;
   }
   
   .course-form-section {
     flex: 1;
-  }
-  
-  .form-group-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .form-actions {
-    padding-left: 0;
+    max-width: 100%;
   }
 }
 
 .delete-course-btn {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.2);
   color: #ef4444;
-  padding: 6px 10px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 1.1rem;
-  transition: all 0.2s ease;
+  transition: all var(--transition-bouncy);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
 }
 
 .delete-course-btn:hover {
   background: #ef4444;
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 15px rgba(239, 68, 68, 0.3);
 }
 
 .delete-course-btn:active {
-  transform: translateY(0);
+  transform: scale(0.95);
 }
